@@ -9,6 +9,12 @@ angular.module('pivot.controllers',['pivot.services']).
            return tweets.search($scope.searchText,$scope.prevSize);
         };
 
+        $scope.$watch('searchText', function(value){
+           if(value != undefined) { 
+             return tweets.search(value,$scope.prevSize);
+            } 
+        });
+
         tweets.registerCallback(function (t) {
         	$timeout(function() {
               $scope.$apply(function(){
