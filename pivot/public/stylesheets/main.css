@@ -2,7 +2,7 @@
     margin-top: 10px;
     background-color: #EEE;
     padding-bottom: 5px;
-    height: 600px;
+    height: 550px;
     background-color: #7ec0ee;
 }
 
@@ -13,4 +13,8 @@
 .tweetCard {
 	margin-top: 10px;
 	margin-bottom: 10px;
+}
+
+.nav {
+	margin-right: 50px;
 }

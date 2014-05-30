@@ -2,20 +2,53 @@
 
 angular.module('pivot.services').factory('tweets', function ($http,queryBuilder,$location) {
 
+  var tweetFeed;
+  var tweetsCache = [];
+
   var onNewTweets = function (t) {};
   var registerCallback = function (callback) { onNewTweets = callback; };
 
-  var search = function(queryString, prevSize) {
+ /* var search = function(queryString, prevSize) {
+    console.log("on text enter");
     var searchString = "*";
     if(queryString.length > 0) {
       searchString=queryString;
     }
 
-    $http({method: "POST", data: queryBuilder.getOldTweets(searchString, prevSize, 0), url: "/tweets/search"})
+    $http.get('/tweets/search',{params: {searchString:searchString}})
                 .success(function (data) {
+                    console.log(data);
                    onNewTweets(data.hits.hits.map(function (t) { return t._source.text; } ));
                 }).error(function (data, status, headers, config) { });
-  }	
+  }*/	
 
-  return {search: search, registerCallback: registerCallback};
+  var realTimeTweets = function (queryString, prevSize) {
+      if (typeof tweetFeed === 'object') { tweetFeed.close(); }
+            
+      var searchString = "*";
+        if(queryString.length > 0) {
+            searchString=queryString;
+        }
+
+        var cachedCallback = function(msg) {
+            var jsonData = JSON.parse(msg.data);
+
+            tweetsCache = tweetsCache.concat(jsonData.text);
+            var lastFiveTweets = tweetsCache.slice(Math.max(tweetsCache.length - 5, 1))
+            console.log(lastFiveTweets);
+            onNewTweets(lastFiveTweets); 
+            
+        };
+
+        tweetFeed = new EventSource("/tweetFeed?q=" + searchString);
+        tweetFeed.addEventListener("message", cachedCallback, false);
+            
+        $http({method: "POST", data: queryBuilder.getOldTweets(searchString, prevSize, 0), url: "/tweets/realTimeTweets"})
+            .success(function (data) {
+                onNewTweets(data.hits.hits.map(function (t) { return t._source.text; } ));
+            }).error(function (data, status, headers, config) { });
+
+    }; 
+
+  return {realTimeTweets: realTimeTweets, registerCallback: registerCallback};
 });	

@@ -1,6 +1,6 @@
 @(message: String)
 
-<html lang="en">
+<html lang="en" ng-app="pivot">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -12,15 +12,24 @@
         <link rel="shortcut icon" type="image/png" href="/assets/images/favicon.png">
     </head>
 
-    <body ng-app="pivot">
-    	<div ng-controller="IndexCtrl">
+    <body ng-app="pivot" ng-controller="IndexCtrl">
+        <div class="collapse navbar-collapse" ng-controller="NavigationCtrl">
+          <ul class="nav navbar-nav">
+             <li ng-class="{ active: isActive('/')}"><a href="/">Real Time Data</a></li>
+             <li ng-class="{ active: isActive('/')}"><a href="/">Historic data analysis</a></li>
+             <li ng-class="{ active: isActive('/cats')}"><a href="/cats">Live Map</a></li>
+           </ul>
+        </div>
+        <div ng-view></div> 
+
+    	<div ng-controller="IndexCtrl">   
            <div class="indexPage"> 
                 <div class="navbar navbar-default">
-                    <form ng-submit-"search()" class="navbar-form navbar-left" role="search">
+                    <form ng-submit-"realTimeTweets()" class="navbar-form navbar-left" role="search">
                         <div class="form-group">
                         <input type="text" class="form-control" placeholder="Search" ng-model="searchText">
                         </div>
-                        <button type="submit" class="btn btn-default" ng-click="search()">Submit</button>
+                        <button type="submit" class="btn btn-default" ng-click="realTimeTweets()">Submit</button>
                         </form>
                     <h4>@message</h4>   
                 </div>
@@ -28,24 +37,31 @@
                 <div class="row">
                     <h4>Live Tweet feed</h4> 
                     <div class="col-lg-4" id="tweet-frame">
-                        <div class="tweetCard" ng-repeat="searchResult in searchResults | limitTo:10 track by $index"
+                        <div class="tweetCard" ng-repeat="searchResult in searchResults | limitTo:6 track by $index"
                             data-tweet="tweet">{{searchResult}}
                             <hr />
                         </div>
                     </div>   
+                    <h6>Word Frequency</h6>
                     <div class="col-lg-8">
-                        Graph 
+                        <div id="wordCloud" class="cloud" data-words="words" data-live="live" data-interval="20000"
+                            data-callback="addSearchString">
+                        </div>
                     </div>   
                </div>     
             </div>   
         </div>
 
     	<script src="/assets/javascripts/angular.min.js"></script>
+        <script type="assets/javascripts/d3.min.js"></script>
+        <script type="assets/javascripts/d3-layout-cloud.js"></script>
+
         <script src="/assets/javascripts/app.js"></script>
         <script src="/assets/javascripts/controllers.js"></script> 
-       
+         <script src="/assets/javascripts/directives.js"></script> 
         <script src="/assets/javascripts/services/queryBuilder.js"></script>
         <script src="/assets/javascripts/services/tweets.js"></script> 
+        <script src="/assets/javascripts/wordCloud.js"></script> 
 
       
     </body>

@@ -3,8 +3,9 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
-POST     /tweets/search             controllers.Application.search 
+GET     /                          controllers.Application.index
+POST    /tweets/realTimeTweets     controllers.Application.search
+GET     /tweetFeed                 controllers.Application.tweetFeed(q: String ?= "*")
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

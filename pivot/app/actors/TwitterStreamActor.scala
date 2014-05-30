@@ -82,7 +82,7 @@ object TwitterStreamActor {
 
   /** parse and persist tweet, push onto channel, catch potential exception */
   def processTweetString(ts: String): Unit = {
-    
+    println(ts)
     try {
       val json = Json.parse(ts)
       (json \ "id_str").asOpt[String].map { id => 
