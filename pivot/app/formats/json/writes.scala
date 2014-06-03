@@ -9,7 +9,7 @@ object Writes {
   implicit object tweetWrites extends Writes[Tweet] {
     def writes(t: Tweet) = JsObject(Seq(
       "text" -> Json.toJson(t.text),
-      "sentimentCount" -> Json.toJson(t.sentimentCount)
+      "created_at" -> Json.toJson(t.created_at)
     ))
   }
 }  

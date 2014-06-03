@@ -33,6 +33,14 @@ object Application extends Controller with elastic4s {
     Ok(views.html.index("Pivot - A Social data analyser"))
   }
 
+  def analysis = Action {
+    Ok(views.html.analysis("Analysis page"))
+  }
+
+  def map = Action {
+    Ok(views.html.map("Analysis page"))
+  }
+
   def search =  Action.async(parse.json) {
     req => WS.url(elasticTweetURL + "_search").post(req.body).map { res => Ok(res.body) }
   }
@@ -48,13 +56,13 @@ object Application extends Controller with elastic4s {
     Enumeratee.onIterateeDone { () => Ok("Ok")}
 
 
-  def getFromElasticSearch(searchString: String) = Action{
+  def getFromElasticSearch(searchString: String) =  Action.async { 
       val something: Future[SearchResponse] = get(searchString)
-        something onComplete {
-          case Success(p) => println(p)
+        /*something onComplete {
+          case Success(p) =>  Ok(Json.toJson(Tweet.formatData(p)))
           case Failure(t) => println("An error has occured: " + t)
-        }  
-        Ok(Json.toJson("Ok"))
+        } */
+      something.map(i => Ok(Json.toJson(Tweet.formatData(i))))
   }
 
   def tweetFeed(q: String) = Action.async { req => {

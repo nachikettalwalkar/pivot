@@ -8,6 +8,13 @@ import models.Tweet
 
 
 object Reads {
+
+  implicit object tweetReads extends Reads[Tweet] {
+    def reads(json: JsValue) = JsSuccess(Tweet(
+      (json \ "text").as[String],
+      (json \ "created_at").as[String]
+     )) 
+  } 
   /*implicit object coordReads extends Reads[Coord] {
     def reads(js: JsValue): JsResult[Coord] = {
       val arr = js.as[Seq[Double]]

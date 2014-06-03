@@ -7,7 +7,6 @@ import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.common.settings.ImmutableSettings;
 
 trait elastic4s {
-
   def get(searchString: String): Future[SearchResponse] = {
     val client = ElasticClient.remote("127.0.0.1", 9300)
 

@@ -1,10 +1,9 @@
 'use strict';
 
 /** utils service */
-angular.module('charts.wordCloud', []).service('wordCloud', function () {
+angular.module('charts.wordcloud', []).service('wordcloud', function () {
 
     var WordCloud = function (w, h, maxEntries, addSearch, elem) {
-        console.log("here");
         var me = {},
             fill = d3.scale.category20b(),
             words = [],

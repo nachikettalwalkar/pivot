@@ -1,0 +1,46 @@
+@(message: String)
+
+<html lang="en">
+
+    <head>
+          <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Analysis</title>
+        
+        <!-- Stylesheets -->
+        <link rel="stylesheet" media="screen" href="/assets/stylesheets/main.css">
+        <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="shortcut icon" type="image/png" href="/assets/images/favicon.png">
+    </head>
+
+    <body ng-app="pivot">
+        <div ng-controller="MapCtrl">
+        	<h2>Live Map</h2>
+			<google-map center="map.center" zoom="map.zoom"></google-map>
+  </div>
+
+
+        <!-- include javascript, jQuery FIRST -->
+        <script src="/assets/javascripts/jquery-1.10.2.min.js"></script>    
+
+        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    	<script src="/assets/javascripts/angular.min.js"></script>
+        <script src='//maps.googleapis.com/maps/api/js?sensor=false'></script>
+        <script src='/assets/javascripts/underscore.js'></script>
+        <script src='/assets/javascripts/angular-google-maps.js'></script>
+        
+        <script src="/assets/javascripts/d3.v3.min.js"></script>
+        <script src="/assets/javascripts/d3.layout.cloud.js"></script>
+
+        <script src="/assets/javascripts/app.js"></script>        
+        <script src="/assets/javascripts/services/queryBuilder.js"></script>
+        <script src="/assets/javascripts/services/wordcount.js"></script>
+        <script src="/assets/javascripts/services/tweets.js"></script>
+
+        <script src="/assets/javascripts/wordcloud.js"></script>
+        <script src="/assets/javascripts/barchart.js"></script>
+        <script src="/assets/javascripts/directives.js"></script>
+        <script src="/assets/javascripts/controllers.js"></script>
+      
+    </body>

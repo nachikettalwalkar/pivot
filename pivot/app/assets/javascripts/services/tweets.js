@@ -28,14 +28,16 @@ angular.module('pivot.services').factory('tweets', function ($http,queryBuilder,
       var searchString = "*";
         if(queryString.length > 0) {
             searchString=queryString;
+            $location.path(searchString);
+        }else {
+          $location.path("");
         }
 
         var cachedCallback = function(msg) {
             var jsonData = JSON.parse(msg.data);
 
             tweetsCache = tweetsCache.concat(jsonData.text);
-            var lastFiveTweets = tweetsCache.slice(Math.max(tweetsCache.length - 5, 1))
-            console.log(lastFiveTweets);
+            var lastFiveTweets = tweetsCache.slice(Math.max(tweetsCache.length - 6, 1))
             onNewTweets(lastFiveTweets); 
             
         };
@@ -43,12 +45,30 @@ angular.module('pivot.services').factory('tweets', function ($http,queryBuilder,
         tweetFeed = new EventSource("/tweetFeed?q=" + searchString);
         tweetFeed.addEventListener("message", cachedCallback, false);
             
-        $http({method: "POST", data: queryBuilder.getOldTweets(searchString, prevSize, 0), url: "/tweets/realTimeTweets"})
+        $http({method: "POST", data: queryBuilder.getOldTweets(searchString, prevSize, 0), url: "/tweets/search"})
             .success(function (data) {
                 onNewTweets(data.hits.hits.map(function (t) { return t._source.text; } ));
             }).error(function (data, status, headers, config) { });
 
     }; 
 
-  return {realTimeTweets: realTimeTweets, registerCallback: registerCallback};
+    var getAnalyzedTweets = function (queryString, prevSize) {
+      var searchString = "*";
+        if(queryString.length > 0) {
+            searchString=queryString;
+            $location.path(searchString);
+        }else {
+          $location.path("");
+        }
+
+            
+        $http.get('/tweets/analysis',{params: {searchString:searchString}})
+                .success(function (data) {
+                    console.log(data);
+                  // onNewTweets(data.hits.hits.map(function (t) { return t._source.text; } ));
+                }).error(function (data, status, headers, config) { });
+
+    }; 
+
+  return {realTimeTweets: realTimeTweets, getAnalyzedTweets:getAnalyzedTweets, registerCallback: registerCallback};
 });	

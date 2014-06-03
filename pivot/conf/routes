@@ -4,7 +4,10 @@
 
 # Home page
 GET     /                          controllers.Application.index
-POST    /tweets/realTimeTweets     controllers.Application.search
+GET     /analysis                  controllers.Application.analysis
+GET     /map                       controllers.Application.map
+POST    /tweets/search             controllers.Application.search
+GET     /tweets/analysis           controllers.Application.getFromElasticSearch(searchString: String)
 GET     /tweetFeed                 controllers.Application.tweetFeed(q: String ?= "*")
 
 # Map static resources from the /public folder to the /assets URL path
